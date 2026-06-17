@@ -1,10 +1,12 @@
 import numpy
 import time 
 
-Connections = numpy.zeros((3,99,99)) # A body , B body , Weight
-Connections.fill(-999)
-Bodies = numpy.zeros((100),dtype= int) # max 100 bodies
-LayerLengths = [1,2,2,1,0]
+#THESE ARRAYS ARE EXAMPLES FOR HOW TO MAKE THE ARRAYS FOR THE NEURAL NETWORK!!!!!!!
+#Connections = numpy.zeros((3,99,99))             # A body , B body , Weight
+#Connections.fill(-999)                          # -999 is the number that we miss when masking out empty indices
+#Bodies = numpy.zeros((100),dtype= int)       # max 100 bodies total
+#LayerLengths = [1,2,2,1,0]                       #first layer doesnt get the bias because its the input
+
 
 def Make_Bodies(LayerLengths):
     Counter = 0
@@ -77,17 +79,4 @@ def Randomly_Tweak_Weights(Connections,LayerLenghts,LayerBodies):
         Connections[2,NeuronCounter,0:LayerLenghts[CurrentLayer+1]]  += numpy.random.randint(-1,1,LayerLenghts[CurrentLayer+1])/10
 
     return Connections
-
-
-Bodies = Make_Bodies(LayerLengths)
-Connections = Make_Connections(Bodies,LayerLengths,Connections)
-Bodies,LayerBodies = Repurpose_Bodies(Bodies,LayerLengths)
-
-start = time.time()
-print(Add_Signals_Forward_Accordingly(Connections,LayerLengths,Bodies,LayerBodies,0.1))
-
-Randomly_Tweak_Weights(Connections,LayerLengths,LayerBodies)
-for x in range(sum(LayerLengths)):
-    print(Find_Connected_Neurons_And_Weights(Connections,x)[1])
-print(time.time()-start,"seconds or",1/(time.time()-start), "times a second")
 
